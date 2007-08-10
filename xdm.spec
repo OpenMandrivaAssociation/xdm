@@ -1,5 +1,5 @@
 Name: xdm
-Version: 1.1.4
+Version: 1.1.5
 Release: %mkrel 1
 Summary: X Display Manager with support for XDMCP 
 Group: System/X11
