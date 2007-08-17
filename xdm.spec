@@ -1,5 +1,5 @@
 Name: xdm
-Version: 1.1.5
+Version: 1.1.6
 Release: %mkrel 1
 Summary: X Display Manager with support for XDMCP 
 Group: System/X11
@@ -21,7 +21,7 @@ BuildRequires: libxaw-devel >= 1.0.1
 BuildRequires: x11-util-macros >= 1.0.1
 BuildRequires: libpam-devel
 
-Requires: xinitrc
+Requires: xinitrc xrdb
 Requires: sessreg
 Conflicts: xorg-x11 < 7.0
 
