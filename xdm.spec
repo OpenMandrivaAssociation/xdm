@@ -1,6 +1,7 @@
+%define	with_consolekit	1
 Name: xdm
 Version: 1.1.6
-Release: %mkrel 1
+Release: %mkrel 2
 Summary: X Display Manager with support for XDMCP 
 Group: System/X11
 Source: http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.bz2
@@ -9,6 +10,7 @@ Source1: xdm.pamd
 Patch0: xdm-1.0.4-reserve.patch
 # Initialize the greeter only after checking if the the required steps are ok
 Patch1: xdm-1.0.4-greeter.patch 
+Patch2: 0002-xdm-console-kit-support.patch
 License: MIT
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -20,6 +22,11 @@ BuildRequires: libxt-devel >= 1.0.0
 BuildRequires: libxaw-devel >= 1.0.1
 BuildRequires: x11-util-macros >= 1.0.1
 BuildRequires: libpam-devel
+
+%if %{with_consolekit}
+BuildRequires:	consolekit-devel
+BuildRequires:	libdbus-devel
+%endif
 
 Requires: xinitrc xrdb
 Requires: sessreg
@@ -37,10 +44,15 @@ user, and running a session.
 %setup -q -n %{name}-%{version}
 %patch0 -p1 -b .reserve
 %patch1 -p1 -b .greeter
+%patch2 -p1 -b .consolekit
 
 %build
+autoreconf
 %configure2_5x	--x-includes=%{_includedir}\
 		--x-libraries=%{_libdir} \
+		%if %{with_consolekit}
+		--with-consolekit \
+		%endif
 		--with-pam
 
 %make
