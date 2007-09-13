@@ -1,7 +1,7 @@
 %define	with_consolekit	1
 Name: xdm
 Version: 1.1.6
-Release: %mkrel 3
+Release: %mkrel 4
 Summary: X Display Manager with support for XDMCP 
 Group: System/X11
 Source: http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.bz2
