@@ -11,7 +11,6 @@ Patch0: xdm-1.0.4-reserve.patch
 # Initialize the greeter only after checking if the the required steps are ok
 Patch1: xdm-1.0.4-greeter.patch 
 Patch2: 0002-xdm-console-kit-support.patch
-Patch3: 0003-xdm-console-kit-tty.patch
 License: MIT
 BuildRoot: %{_tmppath}/%{name}-root
 
@@ -47,7 +46,6 @@ user, and running a session.
 %patch1 -p1 -b .greeter
 %if %{with_consolekit}
 %patch2 -p1 -b .consolekit
-%patch3 -p1 -b .consolekit-tty
 %endif
 
 %build
