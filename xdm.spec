@@ -12,6 +12,7 @@ Patch0: xdm-1.0.4-reserve.patch
 Patch1: xdm-1.0.4-greeter.patch 
 Patch2: 0002-xdm-console-kit-support.patch
 License: MIT
+BuildRoot: %{_tmppath}/%{name}-root
 
 BuildRequires: libx11-devel >= 1.0.0
 BuildRequires: libxau-devel >= 1.0.0
