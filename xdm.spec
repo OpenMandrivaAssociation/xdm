@@ -1,33 +1,36 @@
 %define	with_consolekit	1
 Name: xdm
 Version: 1.1.6
-Release: %mkrel 4
+Release: %mkrel 5
 Summary: X Display Manager with support for XDMCP 
 Group: System/X11
-Source: http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.bz2
+URL: http://xorg.freedesktop.org
+########################################################################
+# git clone git://git.mandriva.com/people/pcpa/xorg/app/xdm xorg/app/xdm
+# cd xorg/app/xdm
+# git-archive --format=tar --prefix=xdm-1.1.6/ xdm-1.1.6 | bzip2 -9 > xdm-1.1.6.tar.bz2
+########################################################################
+Source: %{name}-%{version}.tar.bz2
 Source1: xdm.pamd
-# Support kdm extended syntax to reserve a server for future use but do nothing
-Patch0: xdm-1.0.4-reserve.patch
-# Initialize the greeter only after checking if the the required steps are ok
-Patch1: xdm-1.0.4-greeter.patch 
-Patch2: 0002-xdm-console-kit-support.patch
 License: MIT
+########################################################################
+# git-format-patch xdm-1.1.6..origin/mandriva
+Patch1: 0001-Restore-endif-accidentally-removed-in-d0d4581be22ab.patch
+Patch2: 0002-Debian-bug-440389-800x600-settings-got-lost-scree.patch
+Patch3: 0003-Darwin-doesn-t-need-__DARWIN__-anymore.patch
+Patch4: 0004-Support-kdm-extended-syntax-to-reserve-a-server-for.patch
+Patch5: 0005-Initialize-the-greeter-only-after-checking-if-the-th.patch
+Patch6: 0006-Ass-console-kit-support-to-xdm.patch
+Patch7: 0007-Add-files-required-by-consolekit-support.patch
+########################################################################
 BuildRoot: %{_tmppath}/%{name}-root
-
-BuildRequires: libx11-devel >= 1.0.0
-BuildRequires: libxau-devel >= 1.0.0
-BuildRequires: libxdmcp-devel >= 1.0.0
-BuildRequires: libxmu-devel >= 1.0.0
-BuildRequires: libxt-devel >= 1.0.0
-BuildRequires: libxaw-devel >= 1.0.1
-BuildRequires: x11-util-macros >= 1.0.1
+BuildRequires: x11-util-macros	>= 1.1.5
+BuildRequires: libxaw-devel	>= 1.0.4
 BuildRequires: libpam-devel
-
 %if %{with_consolekit}
 BuildRequires:	consolekit-devel
 BuildRequires:	libdbus-devel
 %endif
-
 Requires: xinitrc xrdb
 Requires: sessreg
 Conflicts: xorg-x11 < 7.0
@@ -42,15 +45,18 @@ user, and running a session.
 
 %prep
 %setup -q -n %{name}-%{version}
-%patch0 -p1 -b .reserve
-%patch1 -p1 -b .greeter
-%if %{with_consolekit}
-%patch2 -p1 -b .consolekit
-%endif
+
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%patch4 -p1
+%patch5 -p1
+%patch6 -p1
+%patch7 -p1
 
 %build
-autoreconf
-%configure2_5x	--x-includes=%{_includedir}\
+autoreconf -ifs
+%configure	--x-includes=%{_includedir}\
 		--x-libraries=%{_libdir} \
 		%if %{with_consolekit}
 		--with-consolekit \
@@ -111,5 +117,3 @@ rm -rf %{buildroot}
 %{_datadir}/X11/app-defaults/Chooser
 %{_mandir}/man1/xdm.*
 %{_libdir}/X11/xdm/*
-
-
