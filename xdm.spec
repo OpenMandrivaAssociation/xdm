@@ -1,31 +1,22 @@
 %define	with_consolekit	1
 Name: xdm
 Version: 1.1.6
-Release: %mkrel 5
+Release: %mkrel 6
 Summary: X Display Manager with support for XDMCP 
 Group: System/X11
 URL: http://xorg.freedesktop.org
-########################################################################
-# git clone git://git.mandriva.com/people/pcpa/xorg/app/xdm xorg/app/xdm
-# cd xorg/app/xdm
-# git-archive --format=tar --prefix=xdm-1.1.6/ xdm-1.1.6 | bzip2 -9 > xdm-1.1.6.tar.bz2
-########################################################################
-Source: %{name}-%{version}.tar.bz2
+Source: http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.bz2
 Source1: xdm.pamd
 License: MIT
-########################################################################
-# git-format-patch xdm-1.1.6..origin/mandriva
-Patch1: 0001-Restore-endif-accidentally-removed-in-d0d4581be22ab.patch
-Patch2: 0002-Debian-bug-440389-800x600-settings-got-lost-scree.patch
-Patch3: 0003-Darwin-doesn-t-need-__DARWIN__-anymore.patch
-Patch4: 0004-Support-kdm-extended-syntax-to-reserve-a-server-for.patch
-Patch5: 0005-Initialize-the-greeter-only-after-checking-if-the-th.patch
-Patch6: 0006-Ass-console-kit-support-to-xdm.patch
-Patch7: 0007-Add-files-required-by-consolekit-support.patch
-########################################################################
 BuildRoot: %{_tmppath}/%{name}-root
-BuildRequires: x11-util-macros	>= 1.1.5
-BuildRequires: libxaw-devel	>= 1.0.4
+
+BuildRequires: libx11-devel >= 1.0.0
+BuildRequires: libxau-devel >= 1.0.0
+BuildRequires: libxdmcp-devel >= 1.0.0
+BuildRequires: libxmu-devel >= 1.0.0
+BuildRequires: libxt-devel >= 1.0.0
+BuildRequires: libxaw-devel >= 1.0.1
+BuildRequires: x11-util-macros >= 1.0.1
 BuildRequires: libpam-devel
 %if %{with_consolekit}
 BuildRequires:	consolekit-devel
@@ -34,6 +25,14 @@ BuildRequires:	libdbus-devel
 Requires: xinitrc xrdb
 Requires: sessreg
 Conflicts: xorg-x11 < 7.0
+
+Patch1: 0001-Restore-endif-accidentally-removed-in-d0d4581be22ab.patch
+Patch2: 0002-Debian-bug-440389-800x600-settings-got-lost-scree.patch
+Patch3: 0003-Darwin-doesn-t-need-__DARWIN__-anymore.patch
+Patch4: 0004-Support-kdm-extended-syntax-to-reserve-a-server-for.patch
+Patch5: 0005-Initialize-the-greeter-only-after-checking-if-the-th.patch
+Patch6: 0006-Ass-console-kit-support-to-xdm.patch
+Patch7: 0007-Add-files-required-by-consolekit-support.patch
 
 %description
 Xdm manages a collection of X displays, which may be on the local host or
@@ -55,8 +54,7 @@ user, and running a session.
 %patch7 -p1
 
 %build
-autoreconf -ifs
-%configure	--x-includes=%{_includedir}\
+%configure2_5x	--x-includes=%{_includedir}\
 		--x-libraries=%{_libdir} \
 		%if %{with_consolekit}
 		--with-consolekit \
