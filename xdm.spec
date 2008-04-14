@@ -106,6 +106,5 @@ rm -rf %{buildroot}
 %dir /var/lib/xdm
 %{_bindir}/xdm
 %{_bindir}/xdmshell
-%{_datadir}/X11/app-defaults/Chooser
 %{_mandir}/man1/xdm.*
 %{_libdir}/X11/xdm/*
