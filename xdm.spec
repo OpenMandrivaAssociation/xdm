@@ -1,7 +1,7 @@
 %define	with_consolekit	1
 Name: xdm
-Version: 1.1.6
-Release: %mkrel 6
+Version: 1.1.7
+Release: %mkrel 1
 Summary: X Display Manager with support for XDMCP 
 Group: System/X11
 URL: http://xorg.freedesktop.org
@@ -26,9 +26,6 @@ Requires: xinitrc xrdb
 Requires: sessreg
 Conflicts: xorg-x11 < 7.0
 
-Patch1: 0001-Restore-endif-accidentally-removed-in-d0d4581be22ab.patch
-Patch2: 0002-Debian-bug-440389-800x600-settings-got-lost-scree.patch
-Patch3: 0003-Darwin-doesn-t-need-__DARWIN__-anymore.patch
 Patch4: 0004-Support-kdm-extended-syntax-to-reserve-a-server-for.patch
 Patch5: 0005-Initialize-the-greeter-only-after-checking-if-the-th.patch
 Patch6: 0006-Ass-console-kit-support-to-xdm.patch
@@ -45,9 +42,6 @@ user, and running a session.
 %prep
 %setup -q -n %{name}-%{version}
 
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
