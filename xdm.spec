@@ -1,6 +1,7 @@
 %define	with_consolekit	1
+%define xdm_libdir	%{_datadir}/X11/xdm
 Name: xdm
-Version: 1.1.7
+Version: 1.1.8
 Release: %mkrel 1
 Summary: X Display Manager with support for XDMCP 
 Group: System/X11
@@ -22,7 +23,8 @@ BuildRequires: libpam-devel
 BuildRequires:	consolekit-devel
 BuildRequires:	libdbus-devel
 %endif
-Requires: xinitrc xrdb
+Requires: xinitrc > 2.4.19-9
+Requires: xrdb
 Requires: sessreg
 Conflicts: xorg-x11 < 7.0
 
@@ -53,6 +55,7 @@ user, and running a session.
 		%if %{with_consolekit}
 		--with-consolekit \
 		%endif
+		--with-xdmlibdir=%{xdm_libdir} \
 		--with-pam
 
 %make
@@ -66,19 +69,17 @@ LANG=C
 export LC_ALL LANG
 
 # remove files that are in xinitrc
-rm -rf %{buildroot}%{_libdir}/X11/xdm/{[A-Z]*,xdm-config}
-
-ln -s ../../../../etc/X11/xdm/xdm-config %{buildroot}%{_libdir}/X11/xdm
+rm -rf %{buildroot}%{xdm_libdir}/{[A-Z]*,xdm-config}
 
 # remove unused devel files
-rm -rf %{buildroot}%{_libdir}/X11/xdm/*.{a,la}
+rm -rf %{buildroot}%{xdm_libdir}/*.{a,la}
 
 # install PAM file
 mkdir -p %{buildroot}%{_sysconfdir}/pam.d
 install -m 644 %{_sourcedir}/xdm.pamd $RPM_BUILD_ROOT/etc/pam.d/xdm
 
-install -d $RPM_BUILD_ROOT/var/lib/xdm
-ln -sf ../../../../var/lib/xdm %{buildroot}%{_libdir}/X11/xdm/authdir
+install -d %{buildroot}/var/lib/xdm
+ln -sf /var/lib/xdm %{buildroot}%{xdm_libdir}/authdir
 
 # logrotate
 mkdir -p %{buildroot}%{_sysconfdir}/logrotate.d
@@ -91,9 +92,9 @@ cat << EOF > %{buildroot}%{_sysconfdir}/logrotate.d/xdm
 EOF
 
 %pre
-if [ -d %{_libdir}/X11/xdm/authdir ]; then
+if [ -d %{xdm_libdir}/authdir ]; then
 	# this is now a symlink
-	rm -rf %{_libdir}/X11/xdm/authdir
+	rm -rf %{xdm_libdir}/authdir
 fi
 
 %clean
@@ -107,4 +108,5 @@ rm -rf %{buildroot}
 %{_bindir}/xdm
 %{_bindir}/xdmshell
 %{_mandir}/man1/xdm.*
-%{_libdir}/X11/xdm/*
+%{xdm_libdir}/*
+%{_datadir}/X11/app-defaults/Chooser
