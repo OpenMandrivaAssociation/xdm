@@ -2,7 +2,7 @@
 %define xdm_libdir	%{_datadir}/X11/xdm
 Name: xdm
 Version: 1.1.8
-Release: %mkrel 3
+Release: %mkrel 2
 Summary: X Display Manager with support for XDMCP 
 Group: System/X11
 URL: http://xorg.freedesktop.org
