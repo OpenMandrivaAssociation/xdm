@@ -1,9 +1,9 @@
 %define	with_consolekit	1
 %define xdm_libdir	%{_datadir}/X11/xdm
 Name: xdm
-Version: 1.1.8
-Release: %mkrel 5
-Summary: X Display Manager with support for XDMCP 
+Version: 1.1.9
+Release: %mkrel 1
+Summary: X Display Manager with support for XDMCP
 Group: System/X11
 URL: http://xorg.freedesktop.org
 Source: http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.bz2
@@ -22,6 +22,7 @@ BuildRequires: libpam-devel
 %if %{with_consolekit}
 BuildRequires:	consolekit-devel
 BuildRequires:	libdbus-devel
+BuildRequires:  x11-util-macros >= 1.3.0
 %endif
 Requires: xinitrc > 2.4.19-9
 Requires: xrdb
@@ -45,11 +46,13 @@ user, and running a session.
 %setup -q -n %{name}-%{version}
 
 %patch4 -p1
-%patch5 -p1
+#%patch5 -p1
 %patch6 -p1
 %patch7 -p1
 
 %build
+# patch 6 requires autoreconf
+autoreconf -v --install
 %configure2_5x	--x-includes=%{_includedir}\
 		--x-libraries=%{_libdir} \
 		%if %{with_consolekit}
