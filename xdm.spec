@@ -1,7 +1,7 @@
 %define	with_consolekit	1
 %define xdm_libdir	%{_datadir}/X11/xdm
 Name: xdm
-Version: 1.1.9
+Version: 1.1.10
 Release: %mkrel 1
 Summary: X Display Manager with support for XDMCP
 Group: System/X11
@@ -31,7 +31,7 @@ Conflicts: xorg-x11 < 7.0
 
 Patch4: 0004-Support-kdm-extended-syntax-to-reserve-a-server-for.patch
 Patch5: 0005-Initialize-the-greeter-only-after-checking-if-the-th.patch
-Patch6: 0006-Ass-console-kit-support-to-xdm.patch
+Patch6: 0006-Add-console-kit-support-to-xdm.patch
 Patch7: 0007-Add-files-required-by-consolekit-support.patch
 
 %description
