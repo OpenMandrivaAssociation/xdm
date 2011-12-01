@@ -79,7 +79,7 @@ rm -rf %{buildroot}%{xdm_libdir}/*.{a,la}
 
 # install PAM file
 mkdir -p %{buildroot}%{_sysconfdir}/pam.d
-install -m 644 %{_sourcedir}/xdm.pamd $RPM_BUILD_ROOT/etc/pam.d/xdm
+install -m 644 %{_sourcedir}/xdm.pamd %{buildroot}/etc/pam.d/xdm
 
 install -d %{buildroot}/var/lib/xdm
 ln -sf /var/lib/xdm %{buildroot}%{xdm_libdir}/authdir
