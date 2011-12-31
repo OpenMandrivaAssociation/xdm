@@ -17,7 +17,7 @@ Patch7: 0007-Add-files-required-by-consolekit-support.patch
 
 BuildRequires: pkgconfig(x11) >= 1.0.0
 BuildRequires: pkgconfig(xau) >= 1.0.0
-BuildRequires: pkgconfig(xaw) >= 1.0.1
+BuildRequires: pkgconfig(xaw7) >= 1.0.1
 BuildRequires: pkgconfig(xdmcp) >= 1.0.0
 BuildRequires: pkgconfig(xmu) >= 1.0.0
 BuildRequires: pkgconfig(xorg-macros) >= 1.3.0
