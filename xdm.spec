@@ -1,38 +1,36 @@
 %define	with_consolekit	1
 %define xdm_libdir	%{_datadir}/X11/xdm
+
 Name: xdm
-Version: 1.1.10
-Release: %mkrel 3
+Version: 1.1.11
+Release: 1
 Summary: X Display Manager with support for XDMCP
 Group: System/X11
+License: MIT
 URL: http://xorg.freedesktop.org
 Source: http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.bz2
 Source1: xdm.pamd
-License: MIT
-BuildRoot: %{_tmppath}/%{name}-root
+Patch4: 0004-Support-kdm-extended-syntax-to-reserve-a-server-for.patch
+#Patch5: 0005-Initialize-the-greeter-only-after-checking-if-the-th.patch
+Patch6: 0006-Add-console-kit-support-to-xdm.patch
+Patch7: 0007-Add-files-required-by-consolekit-support.patch
 
-BuildRequires: libx11-devel >= 1.0.0
-BuildRequires: libxau-devel >= 1.0.0
-BuildRequires: libxdmcp-devel >= 1.0.0
-BuildRequires: libxmu-devel >= 1.0.0
-BuildRequires: libxt-devel >= 1.0.0
-BuildRequires: libxaw-devel >= 1.0.1
-BuildRequires: x11-util-macros >= 1.0.1
-BuildRequires: libpam-devel
+BuildRequires: pkgconfig(x11) >= 1.0.0
+BuildRequires: pkgconfig(xau) >= 1.0.0
+BuildRequires: pkgconfig(xaw) >= 1.0.1
+BuildRequires: pkgconfig(xdmcp) >= 1.0.0
+BuildRequires: pkgconfig(xmu) >= 1.0.0
+BuildRequires: pkgconfig(xorg-macros) >= 1.3.0
+BuildRequires: pkgconfig(xt) >= 1.0.0
+BuildRequires: pam-devel
 %if %{with_consolekit}
-BuildRequires:	consolekit-devel
-BuildRequires:	libdbus-devel
-BuildRequires:  x11-util-macros >= 1.3.0
+BuildRequires:	pkgconfig(ck-connector)
+BuildRequires:	pkgconfig(dbus-1)
 %endif
 Requires: xinitrc > 2.4.19-9
 Requires: xrdb
 Requires: sessreg
 Conflicts: xorg-x11 < 7.0
-
-Patch4: 0004-Support-kdm-extended-syntax-to-reserve-a-server-for.patch
-Patch5: 0005-Initialize-the-greeter-only-after-checking-if-the-th.patch
-Patch6: 0006-Add-console-kit-support-to-xdm.patch
-Patch7: 0007-Add-files-required-by-consolekit-support.patch
 
 %description
 Xdm manages a collection of X displays, which may be on the local host or
@@ -43,23 +41,20 @@ character terminals: prompting for login name and password, authenticating the
 user, and running a session.
 
 %prep
-%setup -q -n %{name}-%{version}
-
-%patch4 -p1
-#%patch5 -p1
-%patch6 -p1
-%patch7 -p1
+%setup -q
+%apply_patches
 
 %build
 # patch 6 requires autoreconf
 autoreconf -v --install
-%configure2_5x	--x-includes=%{_includedir}\
-		--x-libraries=%{_libdir} \
-		%if %{with_consolekit}
-		--with-consolekit \
-		%endif
-		--with-xdmlibdir=%{xdm_libdir} \
-		--with-pam
+%configure2_5x \
+	--x-includes=%{_includedir}\
+	--x-libraries=%{_libdir} \
+%if %{with_consolekit}
+	--with-consolekit \
+%endif
+	--with-xdmlibdir=%{xdm_libdir} \
+	--with-pam
 
 %make
 
@@ -100,11 +95,7 @@ if [ -d %{xdm_libdir}/authdir ]; then
 	rm -rf %{xdm_libdir}/authdir
 fi
 
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %config(noreplace) %{_sysconfdir}/pam.d/xdm
 %config(noreplace) %{_sysconfdir}/logrotate.d/xdm
 %dir /var/lib/xdm
@@ -113,3 +104,4 @@ rm -rf %{buildroot}
 %{_mandir}/man1/xdm.*
 %{xdm_libdir}/*
 %{_datadir}/X11/app-defaults/Chooser
+
