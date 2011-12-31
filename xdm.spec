@@ -54,7 +54,8 @@ autoreconf -v --install
 	--with-consolekit \
 %endif
 	--with-xdmlibdir=%{xdm_libdir} \
-	--with-pam
+	--with-pam \
+	--enable-xdmshell
 
 %make
 
