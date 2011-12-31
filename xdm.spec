@@ -103,6 +103,7 @@ fi
 %{_bindir}/xdm
 %{_bindir}/xdmshell
 %{_mandir}/man1/xdm.*
+%{_mandir}/man1/xdmshell.*
 %{xdm_libdir}/*
 %{_datadir}/X11/app-defaults/Chooser
 
