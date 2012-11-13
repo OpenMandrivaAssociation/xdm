@@ -1,0 +1,120 @@
+From 314ef7342d4f3607b6c0ecfe69bbfd45c45668e9 Mon Sep 17 00:00:00 2001
+From: Paulo Cesar Pereira de Andrade <pcpa@mandriva.com.br>
+Date: Mon, 21 Jan 2008 16:56:22 -0200
+Subject: [PATCH]   Add console-kit support to xdm.
+
+---
+ Makefile.am  |    5 +++++
+ configure.ac |   18 ++++++++++++++++++
+ session.c    |   38 +++++++++++++++++++++++++++++++++++---
+ 3 files changed, 58 insertions(+), 3 deletions(-)
+
+--- xdm-1.1.11/xdm/session.c.orig	2011-09-25 01:35:47.000000000 -0600
++++ xdm-1.1.11/xdm/session.c	2011-12-31 11:45:31.024082818 -0700
+@@ -213,7 +213,11 @@
+     struct display	*d,
+     pid_t		*pidp,
+     char		*name,
+-    char		*passwd);
++    char		*passwd
++#ifdef WITH_CONSOLE_KIT
++    ,char		*ck_session_cookie
++#endif
++			);
+ 
+ static pid_t			clientPid;
+ static struct greet_info	greet;
+@@ -249,6 +253,9 @@
+ #if defined(_POSIX_SOURCE) || defined(SYSV) || defined(SVR4)
+ # define killpg(pgrp, sig) kill(-(pgrp), sig)
+ #endif
++#ifdef WITH_CONSOLE_KIT
++    char *ck_session_cookie = NULL;
++#endif
+ 
+ static void
+ AbortClient (pid_t pid)
+@@ -364,7 +371,14 @@
+ 	     * Start the clients, changing uid/groups
+ 	     *	   setting up environment and running the session
+ 	     */
+-	    if (StartClient (&verify, d, &clientPid, greet.name, greet.password)) {
++#ifdef WITH_CONSOLE_KIT
++	    ck_session_cookie = open_ck_session (getpwnam(greet.name), d);
++#endif
++	    if (StartClient (&verify, d, &clientPid, greet.name, greet.password
++#ifdef WITH_CONSOLE_KIT
++			     ,ck_session_cookie
++#endif
++			     )) {
+ 		Debug ("Client Started\n");
+ 
+                 /* Save memory; close library */
+@@ -402,6 +416,14 @@
+ 	    AbortClient (clientPid);
+ 	}
+     }
++
++#ifdef WITH_CONSOLE_KIT
++    if (ck_session_cookie != NULL) {
++	close_ck_session (ck_session_cookie);
++	free (ck_session_cookie);
++    }
++#endif
++
+     /*
+      * run system-wide reset file
+      */
+@@ -568,7 +590,11 @@
+     struct display	*d,
+     pid_t		*pidp,
+     char		*name,
+-    char		*passwd)
++    char		*passwd
++#ifdef WITH_CONSOLE_KIT
++    ,char		*ck_session_cookie
++#endif
++    )
+ {
+     char	**f, *home;
+     char	*failsafeArgv[2];
+@@ -816,6 +842,12 @@
+ 	if (passwd != NULL)
+ 	    bzero(passwd, strlen(passwd));
+ 
++#ifdef WITH_CONSOLE_KIT
++	if (ck_session_cookie != NULL) {
++	    verify->userEnviron = setEnv ( verify->userEnviron, "XDG_SESSION_COOKIE", ck_session_cookie );
++	}
++#endif
++
+ 	SetUserAuthorization (d, verify);
+ #ifdef USE_SELINUX
+    /*
+--- xdm-1.1.11/configure.ac.orig	2011-09-25 01:41:19.000000000 -0600
++++ xdm-1.1.11/configure.ac	2011-12-31 11:45:06.768338524 -0700
+@@ -166,6 +166,24 @@
+ ])
+ AM_CONDITIONAL(HAVE_SYSTEMD, [test "x$with_systemdsystemunitdir" != "xno"])
+ 
++AC_ARG_WITH(consolekit, AC_HELP_STRING([--with-consolekit],[Use ConsoleKit]),
++	[USE_CONSOLE_KIT=$withval], [USE_CONSOLE_KIT=try])
++if test "x$USE_CONSOLE_KIT" != "xno" ; then
++	AC_SEARCH_LIBS(dbus_message_new_method_call,[dbus-1])
++	AC_CHECK_FUNC(dbus_message_new_method_call,
++		      [WITH_CONSOLE_KIT=1],
++		      [if test "x$USE_CONSOLE_KIT" != "xtry" ; then
++			 AC_MSG_ERROR([ConsoleKit support requested, but dbus_message_new_method_call not found.])
++			 fi])
++fi
++AM_CONDITIONAL(WITH_CONSOLE_KIT, test x$USE_CONSOLE_KIT = xyes)
++if test "x$USE_CONSOLE_KIT" = "xyes"; then
++    DBUS_CFLAGS=$(pkg-config --cflags dbus-1)
++else
++    DBUS_CFLAGS=#
++fi
++AC_SUBST(DBUS_CFLAGS)
++
+ # FIXME: Find better test for which OS'es use su -m  - for now, just try to
+ # mirror the Imakefile setting of:
+ # if  defined(OpenBSDArchitecture) || defined(NetBSDArchitecture) || defined(FreeBSDArchitecture) || defined(DarwinArchitecture)
