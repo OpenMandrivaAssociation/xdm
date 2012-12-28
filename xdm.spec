@@ -1,36 +1,36 @@
 %define	with_consolekit	1
 %define xdm_libdir	%{_datadir}/X11/xdm
 
-Name: xdm
-Version: 1.1.11
-Release: 1
-Summary: X Display Manager with support for XDMCP
-Group: System/X11
-License: MIT
-URL: http://xorg.freedesktop.org
-Source: http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.bz2
-Source1: xdm.pamd
-Patch4: 0004-Support-kdm-extended-syntax-to-reserve-a-server-for.patch
+Name:		xdm
+Version:	1.1.11
+Release:	2
+Summary:	X Display Manager with support for XDMCP
+Group:		System/X11
+License:	MIT
+URL:		http://xorg.freedesktop.org
+Source0:	http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.bz2
+Source1:	xdm.pamd
+Patch4:		0004-Support-kdm-extended-syntax-to-reserve-a-server-for.patch
 #Patch5: 0005-Initialize-the-greeter-only-after-checking-if-the-th.patch
-Patch6: 0006-Add-console-kit-support-to-xdm.patch
-Patch7: 0007-Add-files-required-by-consolekit-support.patch
+Patch6:		0006-Add-console-kit-support-to-xdm.patch
+Patch7:		0007-Add-files-required-by-consolekit-support.patch
 
-BuildRequires: pkgconfig(x11) >= 1.0.0
-BuildRequires: pkgconfig(xau) >= 1.0.0
-BuildRequires: pkgconfig(xaw7) >= 1.0.1
-BuildRequires: pkgconfig(xdmcp) >= 1.0.0
-BuildRequires: pkgconfig(xmu) >= 1.0.0
-BuildRequires: pkgconfig(xorg-macros) >= 1.3.0
-BuildRequires: pkgconfig(xt) >= 1.0.0
-BuildRequires: pam-devel
+BuildRequires:	pkgconfig(x11) >= 1.0.0
+BuildRequires:	pkgconfig(xau) >= 1.0.0
+BuildRequires:	pkgconfig(xaw7) >= 1.0.1
+BuildRequires:	pkgconfig(xdmcp) >= 1.0.0
+BuildRequires:	pkgconfig(xmu) >= 1.0.0
+BuildRequires:	pkgconfig(xorg-macros) >= 1.3.0
+BuildRequires:	pkgconfig(xt) >= 1.0.0
+BuildRequires:	pam-devel
 %if %{with_consolekit}
 BuildRequires:	pkgconfig(ck-connector)
 BuildRequires:	pkgconfig(dbus-1)
 %endif
-Requires: xinitrc > 2.4.19-9
-Requires: xrdb
-Requires: sessreg
-Conflicts: xorg-x11 < 7.0
+Requires:		xinitrc > 2.4.19-9
+Requires:		xrdb
+Requires:		sessreg
+Conflicts:		xorg-x11 < 7.0
 
 %description
 Xdm manages a collection of X displays, which may be on the local host or
@@ -60,7 +60,6 @@ autoreconf -v --install
 %make
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 LC_ALL=C
@@ -75,7 +74,7 @@ rm -rf %{buildroot}%{xdm_libdir}/*.{a,la}
 
 # install PAM file
 mkdir -p %{buildroot}%{_sysconfdir}/pam.d
-install -m 644 %{_sourcedir}/xdm.pamd %{buildroot}/etc/pam.d/xdm
+install -m 644 %{SOURCE1} %{buildroot}/etc/pam.d/xdm
 
 install -d %{buildroot}/var/lib/xdm
 ln -sf /var/lib/xdm %{buildroot}%{xdm_libdir}/authdir
