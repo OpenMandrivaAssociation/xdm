@@ -29,10 +29,10 @@ BuildRequires:	pkgconfig(ck-connector)
 %endif
 BuildRequires:	pkgconfig(dbus-1)
 %endif
-Requires:		xinitrc > 2.4.19-9
-Requires:		xrdb
-Requires:		sessreg
-Conflicts:		xorg-x11 < 7.0
+Requires:	xinitrc > 2.4.19-9
+Requires:	xrdb
+Requires:	sessreg
+Conflicts:	xorg-x11 < 7.0
 
 %description
 Xdm manages a collection of X displays, which may be on the local host or
@@ -61,8 +61,11 @@ autoreconf -v --install
 %endif
 	--with-xdmlibdir=%{xdm_libdir} \
 	--with-pam \
-	--enable-xdmshell \
-	--with-systemdsystemunitdir=%{_unitdir}
+%if %mdvver >= 201300
+	--with-systemdsystemunitdir=%{_unitdir} \
+%endif
+	--enable-xdmshell
+
 
 %make
 
@@ -112,7 +115,9 @@ fi
 %{_mandir}/man1/xdmshell.*
 %{xdm_libdir}/*
 %{_datadir}/X11/app-defaults/Chooser
-
+%if %mdvver >= 201300
+%{_unitdir}/xdm.service
+%endif
 
 %changelog
 * Sat Dec 31 2011 Matthew Dawkins <mattydaw@mandriva.org> 1.1.11-1
