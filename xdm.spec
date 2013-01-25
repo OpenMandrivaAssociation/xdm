@@ -1,5 +1,5 @@
-%define	with_consolekit	1
-%define xdm_libdir	%{_datadir}/X11/xdm
+%define with_consolekit 1
+%define xdm_libdir %{_datadir}/X11/xdm
 
 Name:		xdm
 Version:	1.1.11
@@ -24,7 +24,9 @@ BuildRequires:	pkgconfig(xorg-macros) >= 1.3.0
 BuildRequires:	pkgconfig(xt) >= 1.0.0
 BuildRequires:	pam-devel
 %if %{with_consolekit}
+%if %mdvver < 201300
 BuildRequires:	pkgconfig(ck-connector)
+%endif
 BuildRequires:	pkgconfig(dbus-1)
 %endif
 Requires:		xinitrc > 2.4.19-9
@@ -51,11 +53,16 @@ autoreconf -v --install
 	--x-includes=%{_includedir}\
 	--x-libraries=%{_libdir} \
 %if %{with_consolekit}
+%if %mdvver < 201300
 	--with-consolekit \
+%else
+	--without-consolekit \
+%endif
 %endif
 	--with-xdmlibdir=%{xdm_libdir} \
 	--with-pam \
-	--enable-xdmshell
+	--enable-xdmshell \
+	--with-systemdsystemunitdir=%{_unitdir}
 
 %make
 
@@ -105,7 +112,6 @@ fi
 %{_mandir}/man1/xdmshell.*
 %{xdm_libdir}/*
 %{_datadir}/X11/app-defaults/Chooser
-
 
 
 %changelog
