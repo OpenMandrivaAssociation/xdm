@@ -1,0 +1,19 @@
+diff -Naur xdm-1.1.11/xdm.service.in xdm-1.1.11.tpg/xdm.service.in
+--- xdm-1.1.11/xdm.service.in	2011-09-25 07:35:47.000000000 +0000
++++ xdm-1.1.11.tpg/xdm.service.in	2013-02-14 10:10:22.716360321 +0000
+@@ -1,9 +1,13 @@
+ [Unit]
+ Description=X-Window Display Manager
+-After=systemd-user-sessions.service
++Documentation=man:xdm(1)
++Conflicts=getty@tty7.service
++After=systemd-user-sessions.service getty@tty7.service plymouth-quit.service
+ 
+ [Service]
+ ExecStart=BINDIR/xdm -nodaemon
++Restart=always
++IgnoreSIGPIPE=no
+ 
+ [Install]
+-Alias=graphical.target.wants/xdm.service
++Alias=display-manager.service

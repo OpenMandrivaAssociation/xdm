@@ -14,6 +14,7 @@ Patch4:		0004-Support-kdm-extended-syntax-to-reserve-a-server-for.patch
 #Patch5: 0005-Initialize-the-greeter-only-after-checking-if-the-th.patch
 Patch6:		0006-Add-console-kit-support-to-xdm.patch
 Patch7:		0007-Add-files-required-by-consolekit-support.patch
+Patch8:		xdm-1.1.11-fix-service-file.patch
 
 BuildRequires:	pkgconfig(x11) >= 1.0.0
 BuildRequires:	pkgconfig(xau) >= 1.0.0
