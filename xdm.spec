@@ -40,7 +40,7 @@ user, and running a session.
 %apply_patches
 
 %build
-%configure \
+%configure2_5x \
 	--x-includes=%{_includedir}\
 	--x-libraries=%{_libdir} \
 	--with-xdmlibdir=%{xdm_libdir} \
