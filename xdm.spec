@@ -20,6 +20,7 @@ BuildRequires:	pkgconfig(xmu) >= 1.0.0
 BuildRequires:	pkgconfig(xorg-macros) >= 1.3.0
 BuildRequires:	pkgconfig(xt) >= 1.0.0
 BuildRequires:	pam-devel
+BuildRequires:	pkgconfig(systemd)
 Requires:	xinitrc > 2.4.19-9
 Requires:	xrdb
 Requires:	sessreg
@@ -106,6 +107,4 @@ fi
 %{_mandir}/man1/xdmshell.*
 %{xdm_libdir}/*
 %{_datadir}/X11/app-defaults/Chooser
-%if %mdvver >= 201300
 %{_unitdir}/xdm.service
-%endif
