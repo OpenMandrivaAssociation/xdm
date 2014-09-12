@@ -21,7 +21,7 @@ BuildRequires:	pkgconfig(xorg-macros) >= 1.3.0
 BuildRequires:	pkgconfig(xt) >= 1.0.0
 BuildRequires:	pam-devel
 BuildRequires:	pkgconfig(systemd)
-Requires:	xinitrc > 2.4.19-9
+Requires:	xinitrc > 2.4.21-1
 Requires:	xrdb
 Requires:	sessreg
 Conflicts:	xorg-x11 < 7.0
