@@ -24,6 +24,7 @@ Requires:	xinitrc > 2.4.19-9
 Requires:	xrdb
 Requires:	sessreg
 Conflicts:	xorg-x11 < 7.0
+Requires(post,postun,preun): rpm-helper
 
 %description
 Xdm manages a collection of X displays, which may be on the local host or
@@ -84,6 +85,16 @@ if [ -d %{xdm_libdir}/authdir ]; then
 	# this is now a symlink
 	rm -rf %{xdm_libdir}/authdir
 fi
+
+%post
+%systemd_post xdm.service
+
+%preun
+%systemd_preun xdm.service
+
+%postun
+%systemd_postun
+
 
 %files
 %config(noreplace) %{_sysconfdir}/pam.d/xdm
