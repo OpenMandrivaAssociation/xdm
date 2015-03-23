@@ -2,7 +2,7 @@
 
 Name:		xdm
 Version:	1.1.11
-Release:	11
+Release:	12
 Summary:	X Display Manager with support for XDMCP
 Group:		System/X11
 License:	MIT
@@ -86,16 +86,6 @@ if [ -d %{xdm_libdir}/authdir ]; then
 	# this is now a symlink
 	rm -rf %{xdm_libdir}/authdir
 fi
-
-%post
-%systemd_post xdm.service
-
-%preun
-%systemd_preun xdm.service
-
-%postun
-%systemd_postun
-
 
 %files
 %config(noreplace) %{_sysconfdir}/pam.d/xdm
