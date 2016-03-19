@@ -2,7 +2,7 @@
 
 Name:		xdm
 Version:	1.1.11
-Release:	14
+Release:	15
 Summary:	X Display Manager with support for XDMCP
 Group:		System/X11
 License:	MIT
