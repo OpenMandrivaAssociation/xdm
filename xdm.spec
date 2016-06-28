@@ -2,7 +2,7 @@
 
 Name:		xdm
 Version:	1.1.11
-Release:	15
+Release:	16
 Summary:	X Display Manager with support for XDMCP
 Group:		System/X11
 License:	MIT
@@ -41,13 +41,12 @@ user, and running a session.
 
 %build
 %configure \
-	--x-includes=%{_includedir}\
-	--x-libraries=%{_libdir} \
-	--with-xdmlibdir=%{xdm_libdir} \
-	--with-pam \
-	--with-systemdsystemunitdir=%{_unitdir} \
-	--enable-xdmshell
-
+    --x-includes=%{_includedir}\
+    --x-libraries=%{_libdir} \
+    --with-xdmlibdir=%{xdm_libdir} \
+    --with-pam \
+    --with-systemdsystemunitdir=%{_systemunitdir} \
+    --enable-xdmshell
 
 %make
 
@@ -83,8 +82,8 @@ EOF
 
 %pre
 if [ -d %{xdm_libdir}/authdir ]; then
-	# this is now a symlink
-	rm -rf %{xdm_libdir}/authdir
+# this is now a symlink
+    rm -rf %{xdm_libdir}/authdir
 fi
 
 %files
@@ -97,4 +96,4 @@ fi
 %{_mandir}/man1/xdmshell.*
 %{xdm_libdir}/*
 %{_datadir}/X11/app-defaults/Chooser
-%{_unitdir}/xdm.service
+%{_systemunitdir}/xdm.service
