@@ -20,7 +20,8 @@ BuildRequires:	pkgconfig(xmu) >= 1.0.0
 BuildRequires:	pkgconfig(xorg-macros) >= 1.3.0
 BuildRequires:	pkgconfig(xt) >= 1.0.0
 BuildRequires:	pam-devel
-BuildRequires:	pkgconfig(systemd)
+BuildRequires:	systemd-macros
+BuildRequires: rpm-helper
 Requires:	xinitrc > 2.4.19-9
 Requires:	xrdb
 Requires:	sessreg
@@ -36,8 +37,7 @@ character terminals: prompting for login name and password, authenticating the
 user, and running a session.
 
 %prep
-%setup -q
-%apply_patches
+%autosetup -p1
 
 %build
 %configure \
@@ -45,13 +45,13 @@ user, and running a session.
     --x-libraries=%{_libdir} \
     --with-xdmlibdir=%{xdm_libdir} \
     --with-pam \
-    --with-systemdsystemunitdir=%{_systemunitdir} \
+    --with-systemdsystemunitdir=%{_unitdir} \
     --enable-xdmshell
 
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 LC_ALL=C
 LANG=C
@@ -96,4 +96,4 @@ fi
 %{_mandir}/man1/xdmshell.*
 %{xdm_libdir}/*
 %{_datadir}/X11/app-defaults/Chooser
-%{_systemunitdir}/xdm.service
+%{_unitdir}/xdm.service
