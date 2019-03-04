@@ -1,8 +1,8 @@
 %define xdm_libdir %{_datadir}/X11/xdm
 
 Name:		xdm
-Version:	1.1.11
-Release:	19
+Version:	1.1.12
+Release:	1
 Summary:	X Display Manager with support for XDMCP
 Group:		System/X11
 License:	MIT
