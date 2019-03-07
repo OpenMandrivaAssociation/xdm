@@ -1,16 +1,18 @@
-diff -Naur xdm-1.1.11/xdm.service.in xdm-1.1.11.tpg/xdm.service.in
---- xdm-1.1.11/xdm.service.in	2011-09-25 07:35:47.000000000 +0000
-+++ xdm-1.1.11.tpg/xdm.service.in	2013-02-14 10:10:22.716360321 +0000
-@@ -1,9 +1,13 @@
+--- xdm-1.1.11/xdm.service.in   2011-09-25 09:35:47.000000000 +0200
++++ xdm-1.1.11.save/xdm.service.in  2012-08-07 12:08:24.620127471 +0200
+@@ -1,11 +1,15 @@
  [Unit]
- Description=X-Window Display Manager
+-Description=X-Window Display Manager
 -After=systemd-user-sessions.service
++Description=X11 Display Manager
 +Documentation=man:xdm(1)
 +Conflicts=getty@tty1.service
 +After=systemd-user-sessions.service getty@tty1.service plymouth-quit.service
  
  [Service]
  ExecStart=BINDIR/xdm -nodaemon
+ Type=notify
+ NotifyAccess=all
 +Restart=always
 +IgnoreSIGPIPE=no
  
