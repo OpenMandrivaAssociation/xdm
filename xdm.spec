@@ -1,8 +1,8 @@
 %define xdm_libdir %{_datadir}/X11/xdm
 
 Name:		xdm
-Version:	1.1.11
-Release:	19
+Version:	1.1.12
+Release:	1
 Summary:	X Display Manager with support for XDMCP
 Group:		System/X11
 License:	MIT
@@ -92,8 +92,8 @@ fi
 %dir /var/lib/xdm
 %{_bindir}/xdm
 %{_bindir}/xdmshell
-%{_mandir}/man1/xdm.*
-%{_mandir}/man1/xdmshell.*
+%{_mandir}/man8/xdm.*
+%{_mandir}/man8/xdmshell.*
 %{xdm_libdir}/*
 %{_datadir}/X11/app-defaults/Chooser
 %{_unitdir}/xdm.service
