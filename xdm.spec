@@ -92,8 +92,8 @@ fi
 %dir /var/lib/xdm
 %{_bindir}/xdm
 %{_bindir}/xdmshell
-%{_mandir}/man1/xdm.*
-%{_mandir}/man1/xdmshell.*
+%{_mandir}/man8/xdm.*
+%{_mandir}/man8/xdmshell.*
 %{xdm_libdir}/*
 %{_datadir}/X11/app-defaults/Chooser
 %{_unitdir}/xdm.service
