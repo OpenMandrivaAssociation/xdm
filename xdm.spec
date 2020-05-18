@@ -20,6 +20,7 @@ BuildRequires:	pkgconfig(xmu) >= 1.0.0
 BuildRequires:	pkgconfig(xorg-macros) >= 1.3.0
 BuildRequires:	pkgconfig(xt) >= 1.0.0
 BuildRequires:	pam-devel
+BuildRequires:	pkgconfig(libsystemd)
 BuildRequires:	systemd-macros
 BuildRequires: rpm-helper
 Requires:	xinitrc > 2.4.19-9
