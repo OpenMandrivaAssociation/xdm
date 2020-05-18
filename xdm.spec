@@ -2,14 +2,14 @@
 
 Name:		xdm
 Version:	1.1.12
-Release:	1
+Release:	2
 Summary:	X Display Manager with support for XDMCP
 Group:		System/X11
 License:	MIT
 URL:		http://xorg.freedesktop.org
 Source0:	http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.bz2
 Source1:	xdm.pamd
-Patch4:		0004-Support-kdm-extended-syntax-to-reserve-a-server-for.patch
+Patch0:		xdm-1.1.12-fix-systemd-detection.patch
 #Patch5: 0005-Initialize-the-greeter-only-after-checking-if-the-th.patch
 Patch8:		xdm-1.1.11-fix-service-file.patch
 BuildRequires:	pkgconfig(x11) >= 1.0.0
@@ -46,6 +46,7 @@ user, and running a session.
     --with-xdmlibdir=%{xdm_libdir} \
     --with-pam \
     --with-systemdsystemunitdir=%{_unitdir} \
+    --with-systemd-daemon \
     --enable-xdmshell
 
 %make_build
