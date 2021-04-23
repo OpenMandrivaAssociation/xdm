@@ -1,9 +1,9 @@
 %define xdm_libdir %{_datadir}/X11/xdm
 
+Summary:	X Display Manager with support for XDMCP
 Name:		xdm
 Version:	1.1.12
-Release:	2
-Summary:	X Display Manager with support for XDMCP
+Release:	3
 Group:		System/X11
 License:	MIT
 URL:		http://xorg.freedesktop.org
@@ -22,12 +22,10 @@ BuildRequires:	pkgconfig(xt) >= 1.0.0
 BuildRequires:	pam-devel
 BuildRequires:	pkgconfig(libsystemd)
 BuildRequires:	systemd-macros
-BuildRequires: rpm-helper
 Requires:	xinitrc > 2.4.19-9
 Requires:	xrdb
 Requires:	sessreg
 Conflicts:	xorg-x11 < 7.0
-Requires(post,postun,preun): rpm-helper
 
 %description
 Xdm manages a collection of X displays, which may be on the local host or
@@ -81,12 +79,6 @@ cat << EOF > %{buildroot}%{_sysconfdir}/logrotate.d/xdm
     nocompress
 }
 EOF
-
-%pre
-if [ -d %{xdm_libdir}/authdir ]; then
-# this is now a symlink
-    rm -rf %{xdm_libdir}/authdir
-fi
 
 %files
 %config(noreplace) %{_sysconfdir}/pam.d/xdm
