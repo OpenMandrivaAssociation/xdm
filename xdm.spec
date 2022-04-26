@@ -2,15 +2,13 @@
 
 Summary:	X Display Manager with support for XDMCP
 Name:		xdm
-Version:	1.1.12
-Release:	3
+Version:	1.1.13
+Release:	1
 Group:		System/X11
 License:	MIT
 URL:		http://xorg.freedesktop.org
-Source0:	http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.bz2
+Source0:	http://xorg.freedesktop.org/releases/individual/app/%{name}-%{version}.tar.xz
 Source1:	xdm.pamd
-Patch0:		xdm-1.1.12-fix-systemd-detection.patch
-#Patch5: 0005-Initialize-the-greeter-only-after-checking-if-the-th.patch
 Patch8:		xdm-1.1.11-fix-service-file.patch
 BuildRequires:	pkgconfig(x11) >= 1.0.0
 BuildRequires:	pkgconfig(xau) >= 1.0.0
@@ -80,14 +78,23 @@ cat << EOF > %{buildroot}%{_sysconfdir}/logrotate.d/xdm
 }
 EOF
 
+%post
+%systemd_post %{name}.service
+
+%preun
+%systemd_preun %{name}.service
+
+%postun
+%systemd_postun %{name}.service
+
 %files
 %config(noreplace) %{_sysconfdir}/pam.d/xdm
 %config(noreplace) %{_sysconfdir}/logrotate.d/xdm
 %dir /var/lib/xdm
 %{_bindir}/xdm
 %{_bindir}/xdmshell
-%{_mandir}/man8/xdm.*
-%{_mandir}/man8/xdmshell.*
+%doc %{_mandir}/man8/xdm.*
+%doc %{_mandir}/man8/xdmshell.*
 %{xdm_libdir}/*
 %{_datadir}/X11/app-defaults/Chooser
 %{_unitdir}/xdm.service
