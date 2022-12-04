@@ -2,8 +2,8 @@
 
 Summary:	X Display Manager with support for XDMCP
 Name:		xdm
-Version:	1.1.13
-Release:	2
+Version:	1.1.14
+Release:	1
 Group:		System/X11
 License:	MIT
 URL:		http://xorg.freedesktop.org
